@@ -57,6 +57,7 @@ class ProductController extends Controller
         $data = $request->safe()->except(['variants', 'images', 'warehouse_id', 'initial_quantity']);
         $data['slug'] = Str::slug($request->string('name')).'-'.Str::lower(Str::random(6));
         $data['barcode'] = $data['barcode'] ?? $this->barcodes->generateUniqueCode();
+        $data['unit'] = $data['unit'] ?: 'pcs';
         $data['created_by'] = $request->user()->id;
 
         $product = Product::query()->create($data);
@@ -136,7 +137,12 @@ class ProductController extends Controller
     {
         $this->authorize('update', $product);
 
-        $product->update($request->safe()->except(['variants', 'images']));
+        $data = $request->safe()->except(['variants', 'images']);
+        if (array_key_exists('unit', $data)) {
+            $data['unit'] = $data['unit'] ?: 'pcs';
+        }
+
+        $product->update($data);
 
         foreach ($request->input('variants', []) as $index => $variantInput) {
             if ($request->hasFile("variants.{$index}.image")) {
