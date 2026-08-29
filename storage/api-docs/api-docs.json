@@ -1,0 +1,1359 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Royal SL E-commerce API",
+        "description": "REST API for the Royal SL Ecommerce System — admin panel, customer storefront, POS, warehouse & inventory management, coupons, payments, and reporting. All sales channels (website, Facebook, outlet POS) share a single central inventory.",
+        "contact": {
+            "email": "support@royalsl.example"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api/v1",
+            "description": "API v1"
+        }
+    ],
+    "paths": {
+        "/admin/activity-logs": {
+            "get": {
+                "tags": [
+                    "Admin Users"
+                ],
+                "summary": "List system activity logs (who changed what, and when)",
+                "operationId": "452dde673a84392b0a2b95e761d90b4a",
+                "responses": {
+                    "200": {
+                        "description": "Activity log list"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/admin/brands": {
+            "get": {
+                "tags": [
+                    "Admin Products"
+                ],
+                "summary": "List all brands (admin)",
+                "operationId": "05a6cfaebfaad672ea9815ddedbd9b4f",
+                "responses": {
+                    "200": {
+                        "description": "Brand list"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/admin/categories": {
+            "get": {
+                "tags": [
+                    "Admin Products"
+                ],
+                "summary": "List all categories (admin)",
+                "operationId": "c9d370a5ffd5b98edbb40db5be419cee",
+                "responses": {
+                    "200": {
+                        "description": "Category list"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/admin/coupons": {
+            "get": {
+                "tags": [
+                    "Coupons"
+                ],
+                "summary": "List coupons",
+                "operationId": "bba8467b8b700db42c244728df597610",
+                "responses": {
+                    "200": {
+                        "description": "Coupon list"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Coupons"
+                ],
+                "summary": "Create a coupon",
+                "operationId": "7bf5748ed0e89db551c99f684d08a9d0",
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/admin/payment-methods": {
+            "get": {
+                "tags": [
+                    "Admin Orders"
+                ],
+                "summary": "List available payment methods (cash, card, bank transfer, COD, online gateway)",
+                "operationId": "c584e84e7498925c8356f7117fbcab59",
+                "responses": {
+                    "200": {
+                        "description": "Payment method list"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/admin/products": {
+            "get": {
+                "tags": [
+                    "Admin Products"
+                ],
+                "summary": "List / search products (admin)",
+                "operationId": "2c536fdba30bf94d8f127e47ab617917",
+                "responses": {
+                    "200": {
+                        "description": "Paginated product list"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Admin Products"
+                ],
+                "summary": "Create a product (with optional variants and images)",
+                "operationId": "e048ab31940c05ee2bf01680df6f517c",
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/admin/products/{product}": {
+            "put": {
+                "tags": [
+                    "Admin Products"
+                ],
+                "summary": "Update a product",
+                "operationId": "53eeffa17f3df943dd336437fd8b0da7",
+                "responses": {
+                    "200": {
+                        "description": "Updated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/admin/products/{product}/barcode": {
+            "get": {
+                "tags": [
+                    "Admin Products"
+                ],
+                "summary": "Generate a scannable barcode image (SVG) for a product",
+                "operationId": "b8dfafe68d962c590f15ad339b9c3a50",
+                "responses": {
+                    "200": {
+                        "description": "SVG barcode image"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/admin/roles": {
+            "get": {
+                "tags": [
+                    "Admin Users"
+                ],
+                "summary": "List roles with their permissions",
+                "operationId": "1fbe54def12159b19db06ae306e57c85",
+                "responses": {
+                    "200": {
+                        "description": "Role list"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/admin/permissions": {
+            "get": {
+                "tags": [
+                    "Admin Users"
+                ],
+                "summary": "List all available permissions",
+                "operationId": "302e67a74850669e7e52772a97697a46",
+                "responses": {
+                    "200": {
+                        "description": "Permission list"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/admin/users": {
+            "get": {
+                "tags": [
+                    "Admin Users"
+                ],
+                "summary": "List users (staff & customers)",
+                "operationId": "80c2e09d986ac49741d14d9fe9e3f35b",
+                "responses": {
+                    "200": {
+                        "description": "User list"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Admin Users"
+                ],
+                "summary": "Create a staff/admin user and assign roles",
+                "operationId": "1e82bed5b21b4aa665386e9b5fd9905c",
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Register a new customer account",
+                "operationId": "f8f20d8e5fa3ee0d9ab537e9ac6206b5",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "phone": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Registered"
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Log in and obtain a Sanctum token",
+                "operationId": "3d1aae0ea009e03fadebec819afd774e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Authenticated"
+                    },
+                    "422": {
+                        "description": "Invalid credentials"
+                    }
+                }
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Revoke the current access token",
+                "operationId": "0f604af450f66d99a17c511d6067a1c9",
+                "responses": {
+                    "200": {
+                        "description": "Logged out"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/auth/me": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Get the authenticated user",
+                "operationId": "1482ae868da3ac9ed15d4972dc1724ec",
+                "responses": {
+                    "200": {
+                        "description": "Current user"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/catalog/categories": {
+            "get": {
+                "tags": [
+                    "Catalog"
+                ],
+                "summary": "List categories as a tree (public)",
+                "operationId": "85333c73a70ab03e4cdee1657da476fc",
+                "responses": {
+                    "200": {
+                        "description": "Category tree"
+                    }
+                }
+            }
+        },
+        "/catalog/products": {
+            "get": {
+                "tags": [
+                    "Catalog"
+                ],
+                "summary": "Browse active products (public storefront)",
+                "operationId": "32cc2b52a996196a624f086bdfc76e11",
+                "parameters": [
+                    {
+                        "name": "keyword",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "category_id",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "brand_id",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "latest",
+                                "price_asc",
+                                "price_desc",
+                                "name"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated product list"
+                    }
+                }
+            }
+        },
+        "/catalog/products/{slug}": {
+            "get": {
+                "tags": [
+                    "Catalog"
+                ],
+                "summary": "View a single product by slug",
+                "operationId": "6696929d82366335470a4f9188e36027",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product detail"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/customer/addresses": {
+            "get": {
+                "tags": [
+                    "Customer Orders"
+                ],
+                "summary": "List the customer's saved addresses",
+                "operationId": "e76760fb73627a7108a1672f825adfd6",
+                "responses": {
+                    "200": {
+                        "description": "Address list"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Customer Orders"
+                ],
+                "summary": "Add a new address",
+                "operationId": "e8294e9f7d48739b6fdf68b3c2b25271",
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/cart": {
+            "get": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "View the current cart (authenticated user, or guest via X-Cart-Token header)",
+                "operationId": "3f44f07380f1dba192c6a486479b0179",
+                "parameters": [
+                    {
+                        "name": "X-Cart-Token",
+                        "in": "header",
+                        "description": "Guest cart token (omit when authenticated)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cart contents"
+                    }
+                }
+            }
+        },
+        "/cart/items": {
+            "post": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Add an item to the cart",
+                "operationId": "9ede646c3e810e83b7f6422e6dd71f25",
+                "responses": {
+                    "200": {
+                        "description": "Updated cart"
+                    }
+                }
+            }
+        },
+        "/customer/orders": {
+            "get": {
+                "tags": [
+                    "Customer Orders"
+                ],
+                "summary": "List the authenticated customer's orders",
+                "operationId": "4d8843ad2a492e1c8f91efff05a64e7d",
+                "responses": {
+                    "200": {
+                        "description": "Order list"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/customer/checkout": {
+            "post": {
+                "tags": [
+                    "Customer Orders"
+                ],
+                "summary": "Place a website order from the current cart / provided items",
+                "operationId": "1dd3629b71e28be27876097bdef913ad",
+                "responses": {
+                    "201": {
+                        "description": "Order placed"
+                    },
+                    "422": {
+                        "description": "Insufficient stock or invalid coupon"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/customer/profile": {
+            "get": {
+                "tags": [
+                    "Customer Orders"
+                ],
+                "summary": "Get the authenticated customer's profile",
+                "operationId": "231917ad4cfcf6c9170a989c317da60a",
+                "responses": {
+                    "200": {
+                        "description": "Profile"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Customer Orders"
+                ],
+                "summary": "Update profile",
+                "operationId": "9197fa5668beb97f6573ab5244c94110",
+                "responses": {
+                    "200": {
+                        "description": "Updated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/inventory/damages": {
+            "get": {
+                "tags": [
+                    "Inventory"
+                ],
+                "summary": "List reported damaged stock",
+                "operationId": "47ca70b4e5bb84fe3d103be7272a8607",
+                "responses": {
+                    "200": {
+                        "description": "Damage list"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Inventory"
+                ],
+                "summary": "Report damaged stock (removes it from sellable inventory)",
+                "operationId": "280c267a32611dadc6b93ab0b19a6444",
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/inventory/purchases": {
+            "get": {
+                "tags": [
+                    "Inventory"
+                ],
+                "summary": "List purchase orders",
+                "operationId": "d098cd05ca85e9ec16b1d1523cc8b861",
+                "responses": {
+                    "200": {
+                        "description": "Purchase list"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Inventory"
+                ],
+                "summary": "Create a purchase order from a supplier",
+                "operationId": "f3d8c5dc3937e0d01b76b351c5ef732c",
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/inventory/purchases/{purchase}/receive": {
+            "post": {
+                "tags": [
+                    "Inventory"
+                ],
+                "summary": "Receive stock for a purchase order (increases central inventory)",
+                "operationId": "b15a17f8554b693147c966a46477baf3",
+                "responses": {
+                    "200": {
+                        "description": "Stock received"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/inventory/stock-adjustments": {
+            "get": {
+                "tags": [
+                    "Inventory"
+                ],
+                "summary": "List stock adjustments (physical counts, corrections)",
+                "operationId": "8330f20b87854a90d55810edfa424a4b",
+                "responses": {
+                    "200": {
+                        "description": "Adjustment list"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Inventory"
+                ],
+                "summary": "Create a stock adjustment (sets exact quantities)",
+                "operationId": "c59770c2aae778053899396314148da1",
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/inventory/stock": {
+            "get": {
+                "tags": [
+                    "Inventory"
+                ],
+                "summary": "List current stock levels (optionally filtered by warehouse)",
+                "operationId": "9448d9570ac3dfb71cc47df19399e71f",
+                "parameters": [
+                    {
+                        "name": "warehouse_id",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Stock list"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/inventory/stock/low-stock": {
+            "get": {
+                "tags": [
+                    "Inventory"
+                ],
+                "summary": "List active low-stock alerts",
+                "operationId": "66471be345a20b0a7e36e70e7099d8fa",
+                "responses": {
+                    "200": {
+                        "description": "Low stock alert list"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/inventory/stock/movements": {
+            "get": {
+                "tags": [
+                    "Inventory"
+                ],
+                "summary": "List the stock movement ledger (audit trail for every inventory change)",
+                "operationId": "c6511802094dae7091927614958b3def",
+                "responses": {
+                    "200": {
+                        "description": "Movement list"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/inventory/stock-returns": {
+            "get": {
+                "tags": [
+                    "Inventory"
+                ],
+                "summary": "List customer/supplier stock returns",
+                "operationId": "174e3d5916fd3ebc4505e273c030270f",
+                "responses": {
+                    "200": {
+                        "description": "Return list"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Inventory"
+                ],
+                "summary": "Record a stock return (good-condition items are added back to inventory)",
+                "operationId": "6ffeb68015dc907189fbd92b9278935a",
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/inventory/stock-transfers": {
+            "get": {
+                "tags": [
+                    "Inventory"
+                ],
+                "summary": "List stock transfers between warehouses",
+                "operationId": "103b1adc5f8c0c67546079bf4f808ac8",
+                "responses": {
+                    "200": {
+                        "description": "Transfer list"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Inventory"
+                ],
+                "summary": "Dispatch a stock transfer (deducts source warehouse immediately)",
+                "operationId": "33e239255e4ea40db6583314c08715e5",
+                "responses": {
+                    "201": {
+                        "description": "Created and dispatched"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/inventory/stock-transfers/{stockTransfer}/receive": {
+            "post": {
+                "tags": [
+                    "Inventory"
+                ],
+                "summary": "Receive a stock transfer at the destination warehouse",
+                "operationId": "c9cc6ea976f7b39342065dbeb1244a40",
+                "responses": {
+                    "200": {
+                        "description": "Received"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/inventory/suppliers": {
+            "get": {
+                "tags": [
+                    "Inventory"
+                ],
+                "summary": "List suppliers",
+                "operationId": "d35dec16c8bed5a18c9e92bf895a87c3",
+                "responses": {
+                    "200": {
+                        "description": "Supplier list"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/inventory/warehouses": {
+            "get": {
+                "tags": [
+                    "Inventory"
+                ],
+                "summary": "List warehouses and outlets",
+                "operationId": "8073dfb9da7bb0a7233fbd6244d33836",
+                "responses": {
+                    "200": {
+                        "description": "Warehouse list"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/notifications": {
+            "get": {
+                "tags": [
+                    "Customer Orders"
+                ],
+                "summary": "List the authenticated user's notifications",
+                "operationId": "b1274a2aaae8a4295a7e1925e8d8090f",
+                "responses": {
+                    "200": {
+                        "description": "Notification list"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/admin/orders": {
+            "get": {
+                "tags": [
+                    "Admin Orders"
+                ],
+                "summary": "List/search orders across all channels (website, facebook, pos)",
+                "operationId": "97c74ec8e37842a11bfd2279d4f453f0",
+                "parameters": [
+                    {
+                        "name": "source",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "website",
+                                "facebook",
+                                "pos"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "date_from",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "date_to",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated order list"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/admin/orders/facebook": {
+            "post": {
+                "tags": [
+                    "Admin Orders"
+                ],
+                "summary": "Import an order received via Facebook / Messenger commerce",
+                "operationId": "eb4ee93191ec995a80d6c5fb62c6c0a1",
+                "responses": {
+                    "201": {
+                        "description": "Order created and inventory deducted"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/admin/orders/{order}/status": {
+            "put": {
+                "tags": [
+                    "Admin Orders"
+                ],
+                "summary": "Update an order status",
+                "operationId": "48fe386cae46f9fe330563368893e9c2",
+                "responses": {
+                    "200": {
+                        "description": "Updated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/pos/checkout": {
+            "post": {
+                "tags": [
+                    "POS"
+                ],
+                "summary": "Complete an outlet POS sale (deducts the same central inventory as website/Facebook orders)",
+                "operationId": "f493cef412c8020fa290a21b1a321a11",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "warehouse_id",
+                                    "items",
+                                    "payment_method_id"
+                                ],
+                                "properties": {
+                                    "warehouse_id": {
+                                        "type": "integer"
+                                    },
+                                    "items": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "product_id": {
+                                                    "type": "integer"
+                                                },
+                                                "product_variant_id": {
+                                                    "type": "integer",
+                                                    "nullable": true
+                                                },
+                                                "quantity": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "payment_method_id": {
+                                        "type": "integer"
+                                    },
+                                    "amount_tendered": {
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Sale completed, invoice generated"
+                    },
+                    "422": {
+                        "description": "Insufficient stock"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/pos/lookup/{barcode}": {
+            "get": {
+                "tags": [
+                    "POS"
+                ],
+                "summary": "Look up a product by barcode for the POS scanner",
+                "operationId": "d17a664f20e12ab6b9051d03ca551f7b",
+                "parameters": [
+                    {
+                        "name": "barcode",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product found"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/reports/sales": {
+            "get": {
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Sales report — revenue, discounts, tax, and breakdown by channel/day",
+                "operationId": "095fea5ba8bdd1adcc893955f119f0fc",
+                "parameters": [
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "to",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "source",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "website",
+                                "facebook",
+                                "pos"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "warehouse_id",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sales report"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/reports/orders": {
+            "get": {
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Order report — breakdown by status and payment status",
+                "operationId": "e2778714f09f55dae8f683047d4372f5",
+                "responses": {
+                    "200": {
+                        "description": "Order report"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/reports/products": {
+            "get": {
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Product report — top-selling products and stock cost valuation",
+                "operationId": "35dded4824309843577275690917720d",
+                "responses": {
+                    "200": {
+                        "description": "Product report"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/reports/stock": {
+            "get": {
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Stock report — total units, low-stock items, recent movements",
+                "operationId": "24a51c00d63c2ea51134cde3d08e5d96",
+                "responses": {
+                    "200": {
+                        "description": "Stock report"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Sanctum personal access token. Send as: Authorization: Bearer {token}",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Registration, login, logout"
+        },
+        {
+            "name": "Catalog",
+            "description": "Public product & category browsing"
+        },
+        {
+            "name": "Cart",
+            "description": "Customer shopping cart"
+        },
+        {
+            "name": "Customer Orders",
+            "description": "Customer checkout, order history, addresses"
+        },
+        {
+            "name": "Admin Products",
+            "description": "Admin product catalog management"
+        },
+        {
+            "name": "Admin Users",
+            "description": "Admin user, role & permission management"
+        },
+        {
+            "name": "Admin Orders",
+            "description": "Admin order management (website, Facebook, POS)"
+        },
+        {
+            "name": "Coupons",
+            "description": "Coupon management"
+        },
+        {
+            "name": "POS",
+            "description": "Outlet point-of-sale"
+        },
+        {
+            "name": "Inventory",
+            "description": "Warehouses, stock, transfers, purchases, suppliers"
+        },
+        {
+            "name": "Reports",
+            "description": "Sales, order, product, and stock reports"
+        }
+    ]
+}
