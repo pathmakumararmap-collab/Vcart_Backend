@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\Admin\RoleController;
 use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Catalog\CategoryController as CatalogCategoryController;
+use App\Http\Controllers\Api\Catalog\FlashSaleController;
 use App\Http\Controllers\Api\Catalog\ProductController as CatalogProductController;
 use App\Http\Controllers\Api\Catalog\ReviewController as CatalogReviewController;
 use App\Http\Controllers\Api\Customer\AddressController;
@@ -56,6 +57,7 @@ Route::prefix('v1')->group(function () {
         Route::get('products/{slug}', [CatalogProductController::class, 'show']);
         Route::get('categories', [CatalogCategoryController::class, 'index']);
         Route::get('products/{product}/reviews', [CatalogReviewController::class, 'index']);
+        Route::get('flash-sale', [FlashSaleController::class, 'index']);
     });
 
     // ── Guest/customer cart (works for guests via session, and users) ──

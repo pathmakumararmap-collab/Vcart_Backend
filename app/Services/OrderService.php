@@ -47,14 +47,21 @@ class OrderService
             $coupon = null;
 
             if (! empty($data['coupon_code'])) {
+                $couponLineItems = $lineItems->map(fn (array $line) => [
+                    'product_id' => $line['product']->id,
+                    'category_id' => $line['product']->category_id,
+                    'quantity' => $line['quantity'],
+                    'unit_price' => $line['unit_price'],
+                ]);
+
                 $coupon = $this->coupons->validateForOrder(
                     $data['coupon_code'],
                     $subtotal,
                     $user,
-                    $lineItems->map(fn (array $line) => ['product_id' => $line['product']->id, 'category_id' => $line['product']->category_id]),
+                    $couponLineItems,
                 );
 
-                $discountAmount = $this->coupons->calculateDiscount($coupon, $subtotal);
+                $discountAmount = $this->coupons->calculateDiscount($coupon, $subtotal, $couponLineItems);
             }
 
             $shippingAmount = (float) ($data['shipping_amount'] ?? 0);

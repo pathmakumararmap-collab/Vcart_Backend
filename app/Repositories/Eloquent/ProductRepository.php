@@ -33,7 +33,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     public function search(array $filters, int $perPage = 15): LengthAwarePaginator
     {
         $query = $this->model->newQuery()
-            ->with(['category', 'brand', 'images', 'stocks'])
+            ->with(['category', 'brand', 'images', 'stocks', 'variants:id,product_id,selling_price,is_active'])
             ->withAvg('approvedReviews as reviews_avg_rating', 'rating')
             ->withCount('approvedReviews as reviews_count');
 

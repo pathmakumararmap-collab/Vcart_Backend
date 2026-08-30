@@ -61,17 +61,51 @@ class CouponService
         return $coupon;
     }
 
-    public function calculateDiscount(Coupon $coupon, float $subtotal): float
+    public function calculateDiscount(Coupon $coupon, float $subtotal, ?Collection $lineItems = null): float
     {
+        $eligibleSubtotal = $this->eligibleSubtotal($coupon, $subtotal, $lineItems);
+
         $discount = $coupon->type === 'percentage'
-            ? $subtotal * ($coupon->value / 100)
+            ? $eligibleSubtotal * ($coupon->value / 100)
             : $coupon->value;
 
         if ($coupon->max_discount_amount !== null) {
             $discount = min($discount, (float) $coupon->max_discount_amount);
         }
 
-        return round(min($discount, $subtotal), 2);
+        return round(min($discount, $eligibleSubtotal), 2);
+    }
+
+    /**
+     * A product/category-scoped coupon (e.g. a Flash Sale) must only
+     * discount the items it actually applies to — not the whole cart just
+     * because one eligible item happens to be in it alongside others.
+     *
+     * @param  Collection<int, array{product_id: int, category_id: int, quantity: int, unit_price: float}>|null  $lineItems
+     */
+    private function eligibleSubtotal(Coupon $coupon, float $fullSubtotal, ?Collection $lineItems): float
+    {
+        if ($lineItems === null || $coupon->applicable_to === 'all') {
+            return $fullSubtotal;
+        }
+
+        if ($coupon->applicable_to === 'product') {
+            $allowedProductIds = $coupon->products()->pluck('products.id');
+
+            return (float) $lineItems
+                ->filter(fn (array $line) => $allowedProductIds->contains($line['product_id']))
+                ->sum(fn (array $line) => $line['quantity'] * $line['unit_price']);
+        }
+
+        if ($coupon->applicable_to === 'category') {
+            $allowedCategoryIds = $coupon->categories()->pluck('categories.id');
+
+            return (float) $lineItems
+                ->filter(fn (array $line) => $allowedCategoryIds->contains($line['category_id']))
+                ->sum(fn (array $line) => $line['quantity'] * $line['unit_price']);
+        }
+
+        return $fullSubtotal;
     }
 
     public function recordUsage(Coupon $coupon, Order $order, ?User $user, float $discountAmount): void

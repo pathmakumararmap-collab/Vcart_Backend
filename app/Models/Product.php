@@ -122,6 +122,30 @@ class Product extends Model
 
     public function currentPrice(): float
     {
-        return (float) ($this->discount_price ?? $this->selling_price);
+        if ($this->discount_price !== null) {
+            return (float) $this->discount_price;
+        }
+
+        if ((float) $this->selling_price > 0) {
+            return (float) $this->selling_price;
+        }
+
+        // The admin left the product's own price at 0 and relies entirely
+        // on per-variant pricing — fall back to the cheapest active
+        // variant instead of showing "Rs 0" everywhere the product is
+        // listed (home page, category grids, etc.).
+        if ($this->has_variants) {
+            $variants = $this->relationLoaded('variants')
+                ? $this->variants
+                : $this->variants()->get();
+
+            $variantMin = $variants->where('is_active', true)->min('selling_price');
+
+            if ($variantMin !== null) {
+                return (float) $variantMin;
+            }
+        }
+
+        return (float) $this->selling_price;
     }
 }
