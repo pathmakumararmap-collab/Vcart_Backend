@@ -22,6 +22,7 @@ class CategoryResource extends JsonResource
             'image' => $this->image ? Storage::disk('public')->url($this->image) : null,
             'is_active' => $this->is_active,
             'sort_order' => $this->sort_order,
+            'products_count' => $this->when($this->products_count !== null, fn () => (int) $this->products_count),
             'children' => CategoryResource::collection($this->whenLoaded('children')),
         ];
     }

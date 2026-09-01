@@ -15,6 +15,11 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
 
     public function tree(): Collection
     {
-        return $this->model->newQuery()->whereNull('parent_id')->with('children')->orderBy('sort_order')->get();
+        return $this->model->newQuery()
+            ->whereNull('parent_id')
+            ->with('children')
+            ->withCount(['products' => fn ($q) => $q->where('is_active', true)])
+            ->orderBy('sort_order')
+            ->get();
     }
 }
