@@ -22,6 +22,7 @@ class PlaceOrderRequest extends FormRequest
             'items.*.product_variant_id' => ['nullable', 'exists:product_variants,id'],
             'items.*.quantity' => ['required', 'integer', 'min:1'],
             'coupon_code' => ['nullable', 'string', 'max:50'],
+            'payment_method_id' => ['required', 'exists:payment_methods,id'],
             'shipping_address_id' => ['required_without:customer_name', 'nullable', 'exists:addresses,id'],
             'billing_address_id' => ['nullable', 'exists:addresses,id'],
             'customer_name' => ['required_without:shipping_address_id', 'nullable', 'string', 'max:255'],

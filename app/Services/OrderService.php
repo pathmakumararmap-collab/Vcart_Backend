@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Events\OrderPlaced;
 use App\Models\Order;
+use App\Models\PaymentMethod;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\User;
@@ -24,6 +25,7 @@ class OrderService
     public function __construct(
         private readonly InventoryService $inventory,
         private readonly CouponService $coupons,
+        private readonly PaymentService $payments,
         private readonly WarehouseRepositoryInterface $warehouses,
     ) {}
 
@@ -133,6 +135,37 @@ class OrderService
 
             if ($coupon) {
                 $this->coupons->recordUsage($coupon, $order, $user, $discountAmount);
+            }
+
+            if (! empty($data['payment_method_id'])) {
+                $paymentMethod = PaymentMethod::query()->findOrFail($data['payment_method_id']);
+
+                if ($paymentMethod->code === 'online_gateway') {
+                    // Dummy/simulated online payment — swap this block for a
+                    // real gateway integration (e.g. Stripe/PayHere) later.
+                    // It always "succeeds" so the checkout flow is fully
+                    // testable end-to-end in the meantime.
+                    $this->payments->recordPayment(
+                        order: $order,
+                        paymentMethodId: $paymentMethod->id,
+                        amount: (float) $order->total_amount,
+                        transactionId: 'DUMMY-'.Str::upper(Str::random(10)),
+                        meta: ['simulated' => true],
+                        userId: $data['created_by'] ?? $user?->id,
+                        status: 'completed',
+                    );
+                } else {
+                    // Cash on Delivery (or any other non-online method) —
+                    // record the customer's chosen method, but don't mark
+                    // the order paid until it's actually collected.
+                    $this->payments->recordPayment(
+                        order: $order,
+                        paymentMethodId: $paymentMethod->id,
+                        amount: (float) $order->total_amount,
+                        userId: $data['created_by'] ?? $user?->id,
+                        status: 'pending',
+                    );
+                }
             }
 
             $order->statusHistories()->create([

@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\Catalog\ReviewController as CatalogReviewController
 use App\Http\Controllers\Api\Customer\AddressController;
 use App\Http\Controllers\Api\Customer\CartController;
 use App\Http\Controllers\Api\Customer\OrderController as CustomerOrderController;
+use App\Http\Controllers\Api\Customer\PaymentMethodController as CustomerPaymentMethodController;
 use App\Http\Controllers\Api\Customer\ProfileController;
 use App\Http\Controllers\Api\Inventory\DamageController;
 use App\Http\Controllers\Api\Inventory\PurchaseController;
@@ -97,6 +98,7 @@ Route::prefix('v1')->group(function () {
             Route::post('checkout', [CustomerOrderController::class, 'checkout']);
             Route::get('orders/{order}', [CustomerOrderController::class, 'show']);
             Route::post('orders/{order}/cancel', [CustomerOrderController::class, 'cancel']);
+            Route::get('payment-methods', [CustomerPaymentMethodController::class, 'index']);
         });
 
         // ── Admin: catalog & people management ─────────────────────────
