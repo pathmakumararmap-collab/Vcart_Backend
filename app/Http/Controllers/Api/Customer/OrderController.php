@@ -74,7 +74,7 @@ class OrderController extends Controller
     {
         $this->authorize('view', $order);
 
-        return response()->json(['data' => new OrderResource($order->load(['items', 'warehouse', 'payments', 'statusHistories', 'invoice']))]);
+        return response()->json(['data' => new OrderResource($order->load(['items', 'warehouse', 'payments.paymentMethod', 'statusHistories', 'invoice']))]);
     }
 
     public function cancel(CancelOrderRequest $request, Order $order): JsonResponse

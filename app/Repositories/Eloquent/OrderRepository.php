@@ -22,7 +22,7 @@ class OrderRepository extends BaseRepository implements OrderRepositoryInterface
 
     public function search(array $filters, int $perPage = 15): LengthAwarePaginator
     {
-        $query = $this->model->newQuery()->with(['items', 'user', 'warehouse', 'payments']);
+        $query = $this->model->newQuery()->with(['items', 'user', 'warehouse', 'payments.paymentMethod']);
 
         return $this->applyFilters($query, $filters)->latest()->paginate($perPage);
     }
