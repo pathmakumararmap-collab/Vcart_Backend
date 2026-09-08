@@ -73,7 +73,7 @@ class OrderController extends Controller
     {
         $this->authorize('view', $order);
 
-        return response()->json(['data' => new OrderResource($order->load(['items', 'warehouse', 'user', 'payments.paymentMethod', 'statusHistories', 'invoice']))]);
+        return response()->json(['data' => new OrderResource($order->load(['items', 'warehouse', 'user', 'shippingAddress', 'billingAddress', 'payments.paymentMethod', 'statusHistories', 'invoice']))]);
     }
 
     #[OA\Put(
