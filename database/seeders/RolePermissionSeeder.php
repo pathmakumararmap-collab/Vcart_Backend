@@ -31,6 +31,7 @@ class RolePermissionSeeder extends Seeder
         'pos.sell',
         'reports.view', 'reports.manage',
         'reviews.moderate',
+        'chat.manage',
         'activity-logs.view',
     ];
 

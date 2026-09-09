@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Admin\ActivityLogController;
 use App\Http\Controllers\Api\Admin\BrandController as AdminBrandController;
 use App\Http\Controllers\Api\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Api\Admin\ChatController as AdminChatController;
 use App\Http\Controllers\Api\Admin\ContentImageController;
 use App\Http\Controllers\Api\Admin\CouponController;
 use App\Http\Controllers\Api\Admin\PaymentMethodController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\Api\Catalog\ProductController as CatalogProductControll
 use App\Http\Controllers\Api\Catalog\ReviewController as CatalogReviewController;
 use App\Http\Controllers\Api\Customer\AddressController;
 use App\Http\Controllers\Api\Customer\CartController;
+use App\Http\Controllers\Api\Customer\ChatController as CustomerChatController;
 use App\Http\Controllers\Api\Customer\OrderController as CustomerOrderController;
 use App\Http\Controllers\Api\Customer\PaymentMethodController as CustomerPaymentMethodController;
 use App\Http\Controllers\Api\Customer\ProfileController;
@@ -35,11 +37,14 @@ use App\Http\Controllers\Api\Orders\OrderController as AdminOrderController;
 use App\Http\Controllers\Api\Pos\PosController;
 use App\Http\Controllers\Api\Reports\MovementReportController;
 use App\Http\Controllers\Api\Reports\ReportController;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/ping', fn () => response()->json(['message' => 'pong', 'time' => now()->toIso8601String()]));
 
 Route::prefix('v1')->group(function () {
+
+    Broadcast::routes(['middleware' => ['auth:sanctum']]);
 
     // ── Auth ────────────────────────────────────────────────────────────
     Route::prefix('auth')->group(function () {
@@ -99,6 +104,9 @@ Route::prefix('v1')->group(function () {
             Route::get('orders/{order}', [CustomerOrderController::class, 'show']);
             Route::post('orders/{order}/cancel', [CustomerOrderController::class, 'cancel']);
             Route::get('payment-methods', [CustomerPaymentMethodController::class, 'index']);
+
+            Route::get('chat', [CustomerChatController::class, 'show']);
+            Route::post('chat/messages', [CustomerChatController::class, 'sendMessage']);
         });
 
         // ── Admin: catalog & people management ─────────────────────────
@@ -128,6 +136,11 @@ Route::prefix('v1')->group(function () {
             Route::put('reviews/{review}/approve', [AdminReviewController::class, 'approve']);
             Route::put('reviews/{review}/reject', [AdminReviewController::class, 'reject']);
             Route::delete('reviews/{review}', [AdminReviewController::class, 'destroy']);
+
+            Route::get('chat/conversations', [AdminChatController::class, 'index']);
+            Route::get('chat/conversations/{conversation}/messages', [AdminChatController::class, 'messages']);
+            Route::post('chat/conversations/{conversation}/messages', [AdminChatController::class, 'sendMessage']);
+            Route::post('chat/conversations/{conversation}/read', [AdminChatController::class, 'markRead']);
 
             // Order management across all channels
             Route::get('orders', [AdminOrderController::class, 'index']);
