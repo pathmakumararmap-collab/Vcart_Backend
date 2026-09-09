@@ -66,4 +66,16 @@ class Conversation extends Model
             ->when($this->admin_read_at, fn ($q) => $q->where('created_at', '>', $this->admin_read_at))
             ->count();
     }
+
+    /**
+     * How many messages the admin has sent since the customer last read
+     * this conversation — drives the unread dot on the chat bubble.
+     */
+    public function unreadCountForCustomer(): int
+    {
+        return $this->messages()
+            ->where('sender_id', '!=', $this->user_id)
+            ->when($this->customer_read_at, fn ($q) => $q->where('created_at', '>', $this->customer_read_at))
+            ->count();
+    }
 }

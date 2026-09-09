@@ -27,6 +27,7 @@ class ConversationResource extends JsonResource
                 fn () => $this->messages->last()?->body,
             ),
             'unread_count' => $this->unreadCountForAdmin(),
+            'customer_unread_count' => $this->unreadCountForCustomer(),
             'created_at' => $this->created_at?->toIso8601String(),
         ];
     }

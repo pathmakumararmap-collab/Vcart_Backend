@@ -25,7 +25,6 @@ class ChatController extends Controller
     {
         $conversation = $this->currentConversation($request);
         $conversation->load(['messages.sender']);
-        $conversation->update(['customer_read_at' => now()]);
 
         return response()->json([
             'data' => [
@@ -33,6 +32,21 @@ class ChatController extends Controller
                 'messages' => ChatMessageResource::collection($conversation->messages),
             ],
         ]);
+    }
+
+    #[OA\Post(
+        path: '/customer/chat/read',
+        tags: ['Customer Chat'],
+        summary: 'Mark the conversation as read (call this when the customer opens the chat panel)',
+        security: [['sanctum' => []]],
+        responses: [new OA\Response(response: 200, description: 'Marked as read')],
+    )]
+    public function markRead(Request $request): JsonResponse
+    {
+        $conversation = $this->currentConversation($request);
+        $conversation->update(['customer_read_at' => now()]);
+
+        return response()->json(['data' => new ConversationResource($conversation)]);
     }
 
     #[OA\Post(

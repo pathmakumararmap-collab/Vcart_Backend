@@ -107,6 +107,7 @@ Route::prefix('v1')->group(function () {
 
             Route::get('chat', [CustomerChatController::class, 'show']);
             Route::post('chat/messages', [CustomerChatController::class, 'sendMessage']);
+            Route::post('chat/read', [CustomerChatController::class, 'markRead']);
         });
 
         // ── Admin: catalog & people management ─────────────────────────
