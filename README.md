@@ -1,4 +1,4 @@
-# Royal SL E-commerce — API Backend
+# Vcart E-commerce — API Backend
 
 A production-ready Laravel 12 / PHP 8.4 REST API backend for a multi-channel e-commerce system: website storefront, Facebook order intake, and outlet POS — all sharing one **central inventory**.
 
