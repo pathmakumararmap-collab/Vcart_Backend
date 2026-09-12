@@ -19,7 +19,7 @@
 <body>
     <div class="header">
         <div>
-            <h1>Royal SL E-commerce</h1>
+            <h1>Vcart E-commerce</h1>
             <div class="muted">Colombo, Sri Lanka</div>
         </div>
         <div class="text-right">
@@ -74,6 +74,6 @@
         <tr><td><strong>Total</strong></td><td class="text-right"><strong>{{ $order->currency }} {{ number_format($order->total_amount, 2) }}</strong></td></tr>
     </table>
 
-    <p class="muted" style="margin-top: 40px;">Thank you for shopping with Royal SL E-commerce.</p>
+    <p class="muted" style="margin-top: 40px;">Thank you for shopping with Vcart E-commerce.</p>
 </body>
 </html>

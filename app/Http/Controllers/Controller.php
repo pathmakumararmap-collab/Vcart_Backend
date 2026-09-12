@@ -8,8 +8,8 @@ use OpenApi\Attributes as OA;
 
 #[OA\Info(
     version: '1.0.0',
-    title: 'Royal SL E-commerce API',
-    description: 'REST API for the Royal SL Ecommerce System — admin panel, customer storefront, POS, warehouse & inventory management, coupons, payments, and reporting. All sales channels (website, Facebook, outlet POS) share a single central inventory.',
+    title: 'Vcart E-commerce API',
+    description: 'REST API for the Vcart Ecommerce System — admin panel, customer storefront, POS, warehouse & inventory management, coupons, payments, and reporting. All sales channels (website, Facebook, outlet POS) share a single central inventory.',
     contact: new OA\Contact(email: 'support@royalsl.example'),
 )]
 #[OA\Server(url: '/api/v1', description: 'API v1')]

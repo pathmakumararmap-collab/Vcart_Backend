@@ -32,6 +32,10 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
 
     public function search(array $filters, int $perPage = 15): LengthAwarePaginator
     {
+        if (! empty($filters['keyword'])) {
+            return $this->searchWithMeilisearch($filters, $perPage);
+        }
+
         $query = $this->model->newQuery()
             ->with(['category', 'brand', 'images', 'stocks', 'variants:id,product_id,selling_price,is_active'])
             ->withAvg('approvedReviews as reviews_avg_rating', 'rating')
@@ -40,17 +44,71 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         return $this->applyFilters($query, $filters)->paginate($perPage);
     }
 
-    protected function applyFilters(Builder $query, array $filters): Builder
+    /**
+     * Typo-tolerant, relevance-ranked search via Meilisearch (through
+     * Scout). Category/brand/price/active/featured filters are compiled
+     * into a single Meilisearch filter expression rather than chained
+     * Scout `where()` calls, since Scout's fluent where() only supports
+     * equality — price range needs a raw filter string either way.
+     */
+    protected function searchWithMeilisearch(array $filters, int $perPage): LengthAwarePaginator
     {
-        if (! empty($filters['keyword'])) {
-            $keyword = $filters['keyword'];
-            $query->where(function (Builder $q) use ($keyword) {
-                $q->where('name', 'like', "%{$keyword}%")
-                    ->orWhere('sku', 'like', "%{$keyword}%")
-                    ->orWhere('barcode', 'like', "%{$keyword}%");
-            });
+        $options = [];
+
+        $filterExpression = $this->buildMeilisearchFilter($filters);
+        if ($filterExpression !== '') {
+            $options['filter'] = $filterExpression;
         }
 
+        $options['sort'] = match ($filters['sort'] ?? 'latest') {
+            'price_asc' => ['selling_price:asc'],
+            'price_desc' => ['selling_price:desc'],
+            'name' => ['name:asc'],
+            default => ['created_at:desc'],
+        };
+
+        return Product::search($filters['keyword'])
+            ->options($options)
+            ->query(fn (Builder $query) => $query
+                ->with(['category', 'brand', 'images', 'stocks', 'variants:id,product_id,selling_price,is_active'])
+                ->withAvg('approvedReviews as reviews_avg_rating', 'rating')
+                ->withCount('approvedReviews as reviews_count'))
+            ->paginate($perPage);
+    }
+
+    protected function buildMeilisearchFilter(array $filters): string
+    {
+        $conditions = [];
+
+        if (! empty($filters['category_id'])) {
+            $conditions[] = 'category_id = '.(int) $filters['category_id'];
+        }
+
+        if (! empty($filters['brand_id'])) {
+            $conditions[] = 'brand_id = '.(int) $filters['brand_id'];
+        }
+
+        if (array_key_exists('is_active', $filters) && $filters['is_active'] !== null) {
+            $conditions[] = 'is_active = '.($filters['is_active'] ? 'true' : 'false');
+        }
+
+        if (! empty($filters['is_featured'])) {
+            $conditions[] = 'is_featured = true';
+        }
+
+        if (! empty($filters['min_price'])) {
+            $conditions[] = 'selling_price >= '.(float) $filters['min_price'];
+        }
+
+        if (! empty($filters['max_price'])) {
+            $conditions[] = 'selling_price <= '.(float) $filters['max_price'];
+        }
+
+        return implode(' AND ', $conditions);
+    }
+
+    protected function applyFilters(Builder $query, array $filters): Builder
+    {
         if (! empty($filters['category_id'])) {
             $query->where('category_id', $filters['category_id']);
         }

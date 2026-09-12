@@ -8,9 +8,15 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class OrderPlacedNotification extends Notification
+class OrderStatusUpdatedNotification extends Notification
 {
     use Queueable;
+
+    private const STATUS_LABELS = [
+        'shipped' => 'shipped',
+        'delivered' => 'delivered',
+        'cancelled' => 'cancelled',
+    ];
 
     public function __construct(public readonly Order $order) {}
 
@@ -30,18 +36,19 @@ class OrderPlacedNotification extends Notification
 
     public function toMail(object $notifiable): MailMessage
     {
+        $label = self::STATUS_LABELS[$this->order->status] ?? $this->order->status;
+
         return (new MailMessage)
-            ->subject("Order confirmation — {$this->order->order_no}")
-            ->line("Thank you! Your order {$this->order->order_no} has been received.")
-            ->line("Total: {$this->order->currency} ".number_format((float) $this->order->total_amount, 2))
+            ->subject("Order {$this->order->order_no} — {$label}")
+            ->line("Your order {$this->order->order_no} is now {$label}.")
             ->action('View order', url("/orders/{$this->order->id}"));
     }
 
     public function toNotifyLk(object $notifiable): string
     {
-        $total = number_format((float) $this->order->total_amount, 2);
+        $label = self::STATUS_LABELS[$this->order->status] ?? $this->order->status;
 
-        return "Vcart: Order {$this->order->order_no} confirmed. Total: {$this->order->currency} {$total}. Thank you for shopping with us!";
+        return "Vcart: Your order {$this->order->order_no} is now {$label}.";
     }
 
     /**
@@ -50,10 +57,10 @@ class OrderPlacedNotification extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'type' => 'order_placed',
+            'type' => 'order_status_updated',
             'order_id' => $this->order->id,
             'order_no' => $this->order->order_no,
-            'total_amount' => $this->order->total_amount,
+            'status' => $this->order->status,
         ];
     }
 }

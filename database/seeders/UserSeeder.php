@@ -13,7 +13,7 @@ class UserSeeder extends Seeder
         $admin = User::query()->firstOrCreate(
             ['email' => 'admin@royalsl.test'],
             [
-                'name' => 'Royal SL Admin',
+                'name' => 'Vcart Admin',
                 'phone' => '0770000001',
                 'password' => Hash::make('password'),
                 'status' => 'active',

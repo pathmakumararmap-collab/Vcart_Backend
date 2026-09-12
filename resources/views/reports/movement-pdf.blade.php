@@ -20,7 +20,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>Royal SL E-commerce</h1>
+        <h1>Vcart E-commerce</h1>
         <h1>{{ $title }}</h1>
         <div class="muted">Period: {{ $report['range']['from'] }} to {{ $report['range']['to'] }}</div>
         @if ($report['group_by'])

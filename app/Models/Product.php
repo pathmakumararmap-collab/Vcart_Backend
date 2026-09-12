@@ -7,12 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Scout\Searchable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Product extends Model
 {
-    use HasFactory, LogsActivity, SoftDeletes;
+    use HasFactory, LogsActivity, Searchable, SoftDeletes;
 
     protected $fillable = [
         'category_id', 'brand_id', 'supplier_id', 'name', 'slug', 'sku', 'barcode',
@@ -147,5 +148,31 @@ class Product extends Model
         }
 
         return (float) $this->selling_price;
+    }
+
+    public function searchableAs(): string
+    {
+        return 'products';
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'sku' => $this->sku,
+            'barcode' => $this->barcode,
+            'description' => $this->description,
+            'short_description' => $this->short_description,
+            'category_id' => $this->category_id,
+            'brand_id' => $this->brand_id,
+            'is_active' => (bool) $this->is_active,
+            'is_featured' => (bool) $this->is_featured,
+            'selling_price' => (float) $this->currentPrice(),
+            'created_at' => $this->created_at?->timestamp,
+        ];
     }
 }
